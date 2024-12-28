@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  minecraft_server:
+    image: ubuntu:latest  # Sử dụng Ubuntu làm máy ảo Linux
+    container_name: minecraft_server
+    restart: always
+    ports:
+      - "25565:25565"  # Mở cổng Minecraft server
+    volumes:
+      - .:/opt/minecraft  # Gắn kết thư mục Windows vào container
+    working_dir: /opt/minecraft
+    environment:
+      - EULA=TRUE  # Đồng ý với EULA của Mojang
+    command: >
+        bash -c "
+        apt-get update &&
+        apt-get install -y openjdk-21-jdk wget screen &&
+        screen -dmS minecraft_server bash /opt/minecraft/start.sh &&
+        tail -f /dev/null
+        "
